@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Transaction, FilterOptions } from '../types';
 import { exportToCSV } from '../utils/storage';
-import { useFinance } from '../hooks/useFinance';
 
-export default function TransactionList() {
-    const { transactions } = useFinance();
+interface TransactionListProps {
+    transactions: Transaction[];
+}
+
+export default function TransactionList({ transactions }: TransactionListProps) {
     const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
     const [filters, setFilters] = useState<FilterOptions>({});
 

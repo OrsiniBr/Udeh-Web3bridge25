@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Category, TransactionType } from '../types';
-import { useFinance } from '../hooks/useFinance';
 
-export default function CategoryForm() {
-    const { addCategory } = useFinance();
+interface CategoryFormProps {
+    onSubmit: (category: Omit<Category, "id">) => void;
+}
+
+export default function CategoryForm({ onSubmit }: CategoryFormProps) {
     const [formData, setFormData] = useState<Partial<Category>>({
         name: '',
         type: 'expense',
@@ -13,7 +15,7 @@ export default function CategoryForm() {
         e.preventDefault();
         if (!formData.name || !formData.type) return;
 
-        addCategory({
+        onSubmit({
             name: formData.name,
             type: formData.type as TransactionType,
         });

@@ -1,9 +1,12 @@
 import { useState } from 'react';
-import { Transaction, TransactionType } from '../types';
-import { useFinance } from '../hooks/useFinance';
+import { Transaction, TransactionType, Category } from '../types';
 
-export default function TransactionForm() {
-    const { categories, addTransaction } = useFinance();
+interface TransactionFormProps {
+    categories: Category[];
+    onSubmit: (transaction: Omit<Transaction, "id">) => void;
+}
+
+export default function TransactionForm({ categories, onSubmit }: TransactionFormProps) {
     const [formData, setFormData] = useState<Partial<Transaction>>({
         type: 'expense',
         amount: 0,
@@ -16,7 +19,7 @@ export default function TransactionForm() {
         e.preventDefault();
         if (!formData.type || !formData.amount || !formData.category) return;
 
-        addTransaction({
+        onSubmit({
             type: formData.type as TransactionType,
             amount: Number(formData.amount),
             date: formData.date || new Date().toISOString().split('T')[0],

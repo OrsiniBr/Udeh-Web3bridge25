@@ -7,30 +7,25 @@ import {
   saveCategory,
 } from "../utils/storage";
 
-// Custom event for local storage changes
 const STORAGE_EVENT = "finance-storage-change";
 
 export function useFinance() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
 
-  // Load initial data
   useEffect(() => {
     setTransactions(getTransactions());
     setCategories(getCategories());
   }, []);
 
-  // Listen for both local and cross-tab storage changes
   useEffect(() => {
     const handleStorageChange = () => {
       setTransactions(getTransactions());
       setCategories(getCategories());
     };
 
-    // Listen for cross-tab changes
     window.addEventListener("storage", handleStorageChange);
 
-    // Listen for local changes
     window.addEventListener(STORAGE_EVENT, handleStorageChange);
 
     return () => {
